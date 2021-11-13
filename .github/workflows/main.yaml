@@ -48,7 +48,6 @@ jobs:
           # Note: tags has to be all lower-case
           tags: |
             docker.io/kim0/gh-actions:latest
-            # ghcr.io/kim0/gh-actions:latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
