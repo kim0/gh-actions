@@ -41,6 +41,14 @@ jobs:
           username: kim0
           password: ${{ secrets.HVNTOKEN }}
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: kim0/gh-actions
+          tags: |
+            type=sha,prefix=${{ matrix.platformdashes }}-
+
       # - name: Login to Github Packages
       #   uses: docker/login-action@v1
       #   with:
@@ -63,7 +71,9 @@ jobs:
           # context: ./src/samples/simple
           # Note: tags has to be all lower-case
           tags: |
-            docker.io/kim0/gh-actions:${{ matrix.platformdashes }}-latest
+            ${{ steps.meta.outputs.tags }}
+
+          # docker.io/kim0/gh-actions:${{ matrix.platformdashes }}-latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
