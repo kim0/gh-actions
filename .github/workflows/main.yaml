@@ -44,6 +44,7 @@ jobs:
       #     password: ${{ secrets.GHCRRWTOKEN }}
 
       - name: Set platform with dashes
+        id: vars
         run: |
           platformdashes=$(echo ${{ matrix.platform }} | sed "s/[^[:alnum:]]/-/g")
           echo $platformdashes
@@ -57,7 +58,7 @@ jobs:
           # context: ./src/samples/simple
           # Note: tags has to be all lower-case
           tags: |
-            docker.io/kim0/gh-actions:${{ platformdashes }}-latest
+            docker.io/kim0/gh-actions:${{ steps.vars.outputs.platformdashes }}-latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
