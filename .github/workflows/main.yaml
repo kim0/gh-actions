@@ -96,12 +96,11 @@ jobs:
           images: kim0/gh-actions
           sep-tags: ","
           tags: |
-            type=sha,prefix=${{ matrix.platformdashes }}-
+            type=sha
             type=ref,event=branch
 
       - name: Merge multiplatform docker images
         run: |
           set -eu -o pipefail
           IFS=, tags="${{ steps.meta.outputs.tags }}"
-          for tag in $tags; do echo $tag; done
-          # docker buildx imagetools create --tag kim0/gh-actions:mp2 kim0/gh-actions:linux-amd64-latest kim0/gh-actions:linux-arm64-latest
+          for tag in $tags; do docker buildx imagetools create --tag $tag kim0/gh-actions:linux-amd64-${{ github.sha }} kim0/gh-actions:linux-arm64-${{ github.sha }}; done
