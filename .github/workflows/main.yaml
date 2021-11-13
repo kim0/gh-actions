@@ -94,6 +94,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: kim0/gh-actions
+          sep-tags: ' '
           tags: |
             type=sha,prefix=${{ matrix.platformdashes }}-
             type=ref,event=branch
