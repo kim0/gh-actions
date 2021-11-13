@@ -51,7 +51,7 @@ jobs:
           # context: ./src/samples/simple
           # Note: tags has to be all lower-case
           tags: |
-            docker.io/kim0/gh-actions:latest
+            docker.io/kim0/gh-actions:${{ matrix.platform }}-latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
