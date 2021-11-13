@@ -47,7 +47,7 @@ jobs:
         with:
           images: kim0/gh-actions
           tags: |
-            type=sha,prefix=${{ matrix.platformdashes }}-
+            type=sha,format=long,prefix=${{ matrix.platformdashes }}-
 
       # - name: Login to Github Packages
       #   uses: docker/login-action@v1
@@ -96,7 +96,7 @@ jobs:
           images: kim0/gh-actions
           sep-tags: ","
           tags: |
-            type=sha
+            type=sha,format=long
             type=ref,event=branch
 
       - name: Merge multiplatform docker images
