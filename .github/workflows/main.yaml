@@ -12,7 +12,12 @@ jobs:
   build-and-push-docker-image:
     strategy:
       matrix:
-        platform: [linux/amd64, linux/arm64]
+        # platform: [linux/amd64, linux/arm64]
+        include:
+          - platform: linux/amd64
+            platformdashes: linux-amd64
+          - platform: linux/arm64
+            platformdashes: linux-arm64
     name: Build Docker image and push to repositories
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-latest
@@ -43,12 +48,12 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.GHCRRWTOKEN }}
 
-      - name: Set platform with dashes
-        id: vars
-        run: |
-          platformdashes=$(echo ${{ matrix.platform }} | sed "s/[^[:alnum:]]/-/g")
-          echo $platformdashes
-          echo "::set-output name=platformdashes::$platformdashes"
+      # - name: Set platform with dashes
+      #   id: vars
+      #   run: |
+      #     platformdashes=$(echo ${{ matrix.platform }} | sed "s/[^[:alnum:]]/-/g")
+      #     echo $platformdashes
+      #     echo "::set-output name=platformdashes::$platformdashes"
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -58,7 +63,7 @@ jobs:
           # context: ./src/samples/simple
           # Note: tags has to be all lower-case
           tags: |
-            docker.io/kim0/gh-actions:${{ steps.vars.outputs.platformdashes }}-latest
+            docker.io/kim0/gh-actions:${{ matrix.platformdashes }}-latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
