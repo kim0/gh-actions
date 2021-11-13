@@ -45,9 +45,9 @@ jobs:
 
       - name: Set platform with dashes
         run: |
-          platformdashes="${${{matrix.platform}}////-}"
+          platformdashes=$(echo ${{ matrix.platform }} | sed "s/[^[:alnum:]]/-/g")
           echo $platformdashes
-          echo "::set-env name=platformdashes::$platformdashes"
+          echo "::set-output name=platformdashes::$platformdashes"
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -57,7 +57,7 @@ jobs:
           # context: ./src/samples/simple
           # Note: tags has to be all lower-case
           tags: |
-            docker.io/kim0/gh-actions:${{ matrix.platform }}-latest
+            docker.io/kim0/gh-actions:${{ platformdashes }}-latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
